@@ -16,5 +16,7 @@ $app->get('/', function () use ($app) {
 });
 
 $app->get('/call/missed', 'CallHandler@missedCall');
+$app->post('/call/missed', 'CallHandler@missedCall');
 
+$app->get('/sms/incoming', 'CallHandler@processSMS');
 $app->post('/sms/incoming', 'CallHandler@processSMS');

@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Request;
+
+use Illuminate\Http\Request;
 
 class CallHandler extends Controller
 {
