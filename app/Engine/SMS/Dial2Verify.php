@@ -5,6 +5,7 @@ namespace App\Engine\SMS;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Support\Facades\Log;
 
 class Dial2Verify {
 
@@ -52,8 +53,10 @@ class Dial2Verify {
                 ]
             ])->getBody();
         } catch (GuzzleException $e) {
+            Log::error($e->getMessage());
             return $e;
         } catch (ClientException $e) {
+            Log::error($e->getMessage());
             return $e;
         }
     }

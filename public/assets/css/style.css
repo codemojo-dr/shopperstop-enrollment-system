@@ -1,0 +1,52 @@
+@charset "utf-8";
+/* CSS Document */
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 11px;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+.medium {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px; font-weight: bold;
+}
+
+.mediumwhite{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: #FFF;
+}
+
+.big {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px; font-weight: bold;
+}
+
+.xbig {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.content {
+    padding: 10px 0px;
+}
+
+.content input{
+    width: 100%;
+    display: block;
+    padding: 10px;
+    margin: 15px;
+}
+
+.header, .footer{
+    background: black;
+    color: white;
+    margin: 0;
+    padding: 10px;
+    text-align: center;
+}
