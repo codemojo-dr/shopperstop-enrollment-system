@@ -3,13 +3,28 @@
 namespace App\Providers;
 
 
-use App\Engine\SMS\Dial2Verify;
+use App\Engine\SMS\Services\Messaging as MessagingService;
 use Illuminate\Support\ServiceProvider;
 
 class SMSServiceProvider extends ServiceProvider
 {
 
+    /**
+     * Indicates if loading of the provider is deferred.
+     *
+     * @var bool
+     */
     protected $defer = true;
+
+    /**
+     * Bootstrap the application events.
+     *
+     * @return void
+     * @codeCoverageIgnore
+     */
+    public function boot(){
+        app()->configure('sms');
+    }
 
     /**
      * Register the service provider.
@@ -18,13 +33,15 @@ class SMSServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('dial2verify.sms',function() {
-            return new Dial2Verify();
+        $this->app->singleton('codemojo.sms',function() {
+            return new MessagingService();
         });
+
+        $this->app->alias('codemojo.sms', 'App\Engine\SMS\Contracts\Services\Messaging');
     }
 
     public function provides()
     {
-        return ['dial2verify.sms', 'App\Engine\SMS\Dial2Verify'];
+        return ['codemojo.sms', 'App\Engine\SMS\Contracts\Services\Messaging'];
     }
 }

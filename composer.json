@@ -10,7 +10,8 @@
         "vlucas/phpdotenv": "~2.2",
         "codemojo/startkit": "^0.1.89",
         "guzzlehttp/guzzle": "^6.2",
-        "symfony/psr-http-message-bridge": "^0.3.0"
+        "symfony/psr-http-message-bridge": "^0.3.0",
+        "plivo/plivo-php": "^1.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
