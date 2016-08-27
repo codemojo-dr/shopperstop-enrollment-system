@@ -12,8 +12,6 @@
 */
 
 
-use App\Engine\SMS\Contracts\Services\Messaging;
-
 $app->get('/', function () use ($app) {
     return $app->version();
 });
@@ -24,16 +22,12 @@ $app->post('/call/missed', 'CallHandler@missedCall');
 $app->get('/sms/incoming', 'CallHandler@processSMS');
 $app->post('/sms/incoming', 'CallHandler@processSMS');
 
-$app->get('/test', function(Messaging $messaging){
-    return $messaging->message('Hello World!')->to('+919884111293')->sendMessage();
-});
-
-$app->get('/r/{code}', function ($code){
+$app->get('/r/{code}', function ($code) {
     $meta = app('codemojo.meta');
     $number = $meta->get($code);
-    if(empty($number)) {
+    if (empty($number)) {
         return view('invalid');
-    } else{
+    } else {
         return view('enroll');
     }
 });

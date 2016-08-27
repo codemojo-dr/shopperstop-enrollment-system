@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Engine\SMS\Contracts\Services\Messaging;
+use CodeMojo\Client\Models\CustomerInfo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -10,7 +11,7 @@ class CallHandler extends Controller
 {
 
     private $required_fields = [
-        'card' => 'required|int|min:10|max:16',
+        'card' => 'required|integer|digits_between:10,16',
         'name' => 'required|string',
         'email' => 'required|email',
         'dob' => 'required|date'
@@ -69,12 +70,19 @@ class CallHandler extends Controller
 
         $number = $this->sanitizeNumber($number);
 
-        $session = $meta->get('session'.$number)['value'];
-
         $details['card'] = $request->get('card_no');
         $details['name'] = $request->get('name');
         $details['email'] = $request->get('email');
         $details['dob'] = $request->get('dob');
+
+        /*
+        * Validate the inputs and get the invalid fields
+        */
+        $validator = Validator::make($details, $this->required_fields);
+
+        if(count($validator->invalid()) > 0) {
+            return view('enroll')->withErrors($validator)->with($details);
+        }
 
         $details['number'] = $number;
         if($this->processFinalStep($details)){
@@ -159,7 +167,15 @@ class CallHandler extends Controller
             $this->messaging->to($details['number'])->message($message)->send();
             return false;
         } else {
-            app('codemojo.wallet')->addBalance($details['card'], 50, 1, 0, sha1(time() . $details['number']. $details['card']), 'Card activation bonus', 'ONBOARDING_BONUS');
+            app('codemojo.gamify')->captureAction($details['card'], 'card-activation');
+
+            $info = new CustomerInfo();
+            $info->setEmail($details['email']);
+            $info->setPhone($details['number']);
+            $info->setName($details['name']);
+            $info->setDOB($details['dob']);
+
+            app('codemojo.sync')->syncUserData($details['card'], $info);
 
             $balance = app('codemojo.wallet')->getBalance($details['card']);
             $message = "Congratulations, your First Citizen Card has been successfully activated. We have credited 50 points to your account & your current balance is {$balance['total']} points"

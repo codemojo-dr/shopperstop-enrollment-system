@@ -226,6 +226,6 @@ select.error{
 .validation-message .success{
     color: green;
 }
-.validation-message .error{
+.validation-message .error, .error{
     color: #C40016;
 }
